@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:story_app/features/auth/bloc/auth_bloc.dart';
 import 'package:story_app/features/auth/data/models/request/register_request_model.dart';
 
+import '../../../commons/config/themes/theme.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -195,8 +197,19 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: TextStyle(decoration: TextDecoration.underline),
                       ),
                     ),
-                    OutlinedButton(
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
                       onPressed: () => context.pop(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: thirdColor,
+                        foregroundColor: secondaryColor,
+                        textStyle: const TextStyle(),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                      ),
                       child: const Text("Login"),
                     ),
                   ],

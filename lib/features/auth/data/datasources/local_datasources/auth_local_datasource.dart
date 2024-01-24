@@ -14,8 +14,8 @@ class AuthLocalDatasource {
   Future<String> getToken() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     final authJson = pref.getString('auth') ?? '';
-    final authData = LoginResult.fromJson(jsonDecode(authJson));
-    return authData.token ?? '';
+    final authData = loginResponseModelFromJson(authJson).loginResult;
+    return authData?.token ?? '';
   }
 
   Future<bool> isLogin() async {

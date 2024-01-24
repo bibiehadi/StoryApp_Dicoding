@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:story_app/commons/config/routers/router.dart';
 import 'package:story_app/features/auth/bloc/auth_bloc.dart';
 import 'package:story_app/features/auth/data/datasources/remote_datasources/auth_datasource.dart';
+import 'package:story_app/features/home/bloc/stories_bloc.dart';
 
 import 'commons/config/themes/theme.dart';
+import 'features/home/data/datasources/remote_datasources/stories_datasource.dart';
 
 void main() {
   runApp(const MainApp());
@@ -18,16 +20,19 @@ class MainApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthBloc(AuthDatasource()),
+          create: (context) => AuthBloc(
+            AuthDatasource(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => StoriesBloc(
+            StroiesDatasource(),
+          ),
         ),
       ],
       child: MaterialApp.router(
         title: 'Stories App',
         theme: ThemeData(
-          colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: primaryColor,
-              secondary: secondaryColor,
-              onPrimary: thirdColor),
           textTheme: myTextTheme,
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
@@ -39,6 +44,11 @@ class MainApp extends StatelessWidget {
               ),
             ),
           ),
+          colorScheme: Theme.of(context).colorScheme.copyWith(
+              primary: primaryColor,
+              secondary: secondaryColor,
+              onPrimary: thirdColor,
+              background: thirdColor),
         ),
         routerConfig: router,
       ),

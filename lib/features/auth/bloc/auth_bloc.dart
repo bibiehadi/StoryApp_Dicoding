@@ -19,7 +19,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       response.fold(
         (left) => emit(LoginFailed(message: left)),
         (right) {
-          print(right);
           return emit(LoginSuccess(responseModel: right));
         },
       );
@@ -28,11 +27,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterAuthEvent>((event, emit) async {
       emit(RegisterLoading());
       final response = await _auth_dataresource.register(event.requestModel);
-      print("GETTING RESPONSE");
       response.fold(
         (left) => emit(RegisterFailed(message: left)),
         (right) {
-          print(right);
           return emit(RegisterSuccess(responseModel: right));
         },
       );

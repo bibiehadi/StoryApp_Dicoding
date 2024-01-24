@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:story_app/features/auth/bloc/auth_bloc.dart';
 import 'package:story_app/features/auth/data/models/request/login_request_model.dart';
 
+import '../../../commons/config/themes/theme.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -31,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
         listener: (context, state) {
           if (state is LoginFailed) {
             context.pop();
-            print('failed: ${state.message}');
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
@@ -41,7 +42,6 @@ class _LoginPageState extends State<LoginPage> {
           }
 
           if (state is LoginSuccess) {
-            print('success');
             context.pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -161,7 +161,19 @@ class _LoginPageState extends State<LoginPage> {
                               TextStyle(decoration: TextDecoration.underline),
                         ),
                       ),
-                      TextButton(
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: thirdColor,
+                            foregroundColor: secondaryColor,
+                            textStyle: const TextStyle(),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                            ),
+                          ),
                           onPressed: () {
                             context.push('/register');
                           },
