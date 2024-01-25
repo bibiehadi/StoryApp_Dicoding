@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:story_app/features/home/data/datasources/remote_datasources/stories_datasource.dart';
-import 'package:story_app/features/home/data/models/response/get_stories_response_model.dart';
+
+import '../../data/datasources/remote_datasources/stories_datasource.dart';
+import '../../data/models/response/get_stories_response_model.dart';
 
 part 'stories_event.dart';
 part 'stories_state.dart';

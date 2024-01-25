@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
         listener: (context, state) {
           if (state is RegisterFailed) {
             context.pop();
-            print('failed: ${state.message}');
+
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
@@ -52,7 +52,6 @@ class _RegisterPageState extends State<RegisterPage> {
           }
 
           if (state is RegisterSuccess) {
-            print('success');
             context.pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

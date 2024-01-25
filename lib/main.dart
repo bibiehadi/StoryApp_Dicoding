@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:story_app/commons/config/routers/router.dart';
 import 'package:story_app/features/auth/bloc/auth_bloc.dart';
 import 'package:story_app/features/auth/data/datasources/remote_datasources/auth_datasource.dart';
-import 'package:story_app/features/home/bloc/stories_bloc.dart';
+import 'package:story_app/features/home/bloc/stories_bloc/stories_bloc.dart';
+import 'package:story_app/features/home/bloc/story_detail_bloc/story_detail_bloc.dart';
 
 import 'commons/config/themes/theme.dart';
 import 'features/home/data/datasources/remote_datasources/stories_datasource.dart';
@@ -26,6 +27,11 @@ class MainApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => StoriesBloc(
+            StroiesDatasource(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => StoryDetailBloc(
             StroiesDatasource(),
           ),
         ),

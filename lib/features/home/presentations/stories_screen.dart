@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../commons/config/themes/theme.dart';
-import '../bloc/stories_bloc.dart';
+import '../../auth/data/datasources/local_datasources/auth_local_datasource.dart';
+import '../bloc/stories_bloc/stories_bloc.dart';
 import 'widget/story_card.dart';
 
 class StoriesScreen extends StatefulWidget {
@@ -21,9 +23,25 @@ class _StoriesScreenState extends State<StoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: BlocConsumer<StoriesBloc, StoriesState>(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: thirdColor,
+        foregroundColor: secondaryColor,
+        surfaceTintColor: primaryColor,
+        title: Text(
+          'Story App',
+          style: myTextTheme.titleLarge,
+        ),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                await AuthLocalDatasource().removeAuthData();
+                context.goNamed('login');
+              },
+              icon: const Icon(Icons.logout)),
+        ],
+      ),
+      body: BlocConsumer<StoriesBloc, StoriesState>(
         listener: (context, state) {
           // TODO: implement listener
         },

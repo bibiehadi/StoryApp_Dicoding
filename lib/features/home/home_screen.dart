@@ -16,23 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: thirdColor,
-        foregroundColor: secondaryColor,
-        surfaceTintColor: primaryColor,
-        title: Text(
-          'Story App',
-          style: myTextTheme.titleLarge,
-        ),
-        actions: [
-          IconButton(
-              onPressed: () async {
-                await AuthLocalDatasource().removeAuthData();
-                context.goNamed('login');
-              },
-              icon: const Icon(Icons.logout)),
-        ],
-      ),
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
