@@ -17,6 +17,7 @@ class StoriesScreen extends StatefulWidget {
 class _StoriesScreenState extends State<StoriesScreen> {
   @override
   void initState() {
+    print('create');
     BlocProvider.of<StoriesBloc>(context).add(GetStoriesEvent());
     super.initState();
   }

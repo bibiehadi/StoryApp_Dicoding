@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/features/home/presentations/stories_screen.dart';
 import 'package:story_app/features/home/presentations/story_page.dart';
+import 'package:story_app/features/home/presentations/upload_screen.dart';
 
 import '../../../features/auth/data/datasources/local_datasources/auth_local_datasource.dart';
 import '../../../features/auth/presentations/login_page.dart';
@@ -9,7 +10,8 @@ import '../../../features/auth/presentations/register_page.dart';
 import '../../../features/home/home_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey =
+final GlobalKey<NavigatorState> _homeNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _uploadNavigatorKey =
     GlobalKey<NavigatorState>();
 
 final router = GoRouter(
@@ -23,7 +25,7 @@ final router = GoRouter(
           HomeScreen(child: navigationShell),
       branches: [
         StatefulShellBranch(
-          navigatorKey: _shellNavigatorKey,
+          navigatorKey: _homeNavigatorKey,
           routes: [
             GoRoute(
                 name: 'home',
@@ -36,6 +38,16 @@ final router = GoRouter(
                         storyId: state.pathParameters['userId'] ?? ''),
                   ),
                 ]),
+          ],
+        ),
+        StatefulShellBranch(
+          navigatorKey: _uploadNavigatorKey,
+          routes: [
+            GoRoute(
+              name: 'upload',
+              path: '/upload',
+              builder: (context, state) => const UploadScreen(),
+            ),
           ],
         )
       ],
@@ -56,7 +68,7 @@ final router = GoRouter(
   redirect: (context, state) async {
     final isLogin = await AuthLocalDatasource().isLogin();
     if (!isLogin) {
-      return '/';
+      return '/login';
     }
     return null;
   },

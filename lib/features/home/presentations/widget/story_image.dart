@@ -12,7 +12,6 @@ class StoryImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width * 2 / 3,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Image.network(

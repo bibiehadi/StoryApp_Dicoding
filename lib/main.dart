@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:story_app/commons/config/routers/router.dart';
 import 'package:story_app/features/auth/bloc/auth_bloc.dart';
 import 'package:story_app/features/auth/data/datasources/remote_datasources/auth_datasource.dart';
+import 'package:story_app/features/home/bloc/pick_image/image_galery_bloc.dart';
 import 'package:story_app/features/home/bloc/stories_bloc/stories_bloc.dart';
 import 'package:story_app/features/home/bloc/story_detail_bloc/story_detail_bloc.dart';
+import 'package:story_app/features/home/bloc/upload_story/upload_story_bloc.dart';
 
 import 'commons/config/themes/theme.dart';
 import 'features/home/data/datasources/remote_datasources/stories_datasource.dart';
@@ -28,13 +30,21 @@ class MainApp extends StatelessWidget {
         BlocProvider(
           create: (context) => StoriesBloc(
             StroiesDatasource(),
-          ),
+          )..add(GetStoriesEvent()),
         ),
         BlocProvider(
           create: (context) => StoryDetailBloc(
             StroiesDatasource(),
           ),
         ),
+        BlocProvider(
+          create: (context) => ImageGaleryBloc(),
+        ),
+        BlocProvider(
+          create: (context) => UploadStoryBloc(
+            StroiesDatasource(),
+          ),
+        )
       ],
       child: MaterialApp.router(
         title: 'Stories App',

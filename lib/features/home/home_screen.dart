@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../commons/config/themes/theme.dart';
-import '../auth/data/datasources/local_datasources/auth_local_datasource.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.child});
@@ -23,17 +22,20 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: secondaryColor,
         unselectedItemColor: thirdColor,
         currentIndex: widget.child.currentIndex,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         onTap: (index) {
-          if (index == 1) {
-            Container(
-              child: showModalUploadMenu(context),
-            );
-          } else {
-            widget.child.goBranch(
-              index,
-              initialLocation: index == widget.child.currentIndex,
-            );
-          }
+          // if (index == 1) {
+          //   Container(
+          //     child: showModalUploadMenu(context),
+          //   );
+          // } else {
+          widget.child.goBranch(
+            index,
+            initialLocation: index == widget.child.currentIndex,
+          );
+          setState(() {});
+          // }
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -44,34 +46,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
-
-showModalUploadMenu(BuildContext context) {
-  return showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    useRootNavigator: true,
-    backgroundColor: thirdColor,
-    builder: (context) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.photo),
-            title: const Text('Photo'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.folder),
-            title: const Text('Folder'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      );
-    },
-  );
 }

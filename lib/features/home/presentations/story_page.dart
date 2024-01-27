@@ -35,7 +35,7 @@ class _StoryPageState extends State<StoryPage> {
           foregroundColor: secondaryColor,
           surfaceTintColor: primaryColor,
           title: Text(
-            'Story App',
+            'Story',
             style: myTextTheme.titleLarge,
           ),
           actions: [
@@ -44,10 +44,7 @@ class _StoryPageState extends State<StoryPage> {
                 icon: const Icon(Icons.more_vert_rounded)),
           ],
         ),
-        body: BlocConsumer<StoryDetailBloc, StoryDetailState>(
-          listener: (context, state) {
-            // TODO: implement listener
-          },
+        body: BlocBuilder<StoryDetailBloc, StoryDetailState>(
           builder: (context, state) {
             if (state is StoryDetailFailed) {
               return Center(
@@ -62,27 +59,29 @@ class _StoryPageState extends State<StoryPage> {
               );
             }
             if (state is StoryDetailSuccess) {
-              return Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 5),
-                    ProfileBar(
-                      imageUrl: state.responseModel.story?.photoUrl ?? '',
-                      name: state.responseModel.story?.name ?? '',
-                    ),
-                    const SizedBox(height: 5),
-                    StoryImage(
-                        imageUrl: state.responseModel.story?.photoUrl ?? ''),
-                    const StoryReactButton(),
-                    StoryDescription(
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 5),
+                      ProfileBar(
+                        imageUrl: state.responseModel.story?.photoUrl ?? '',
                         name: state.responseModel.story?.name ?? '',
-                        description:
-                            state.responseModel.story?.description ?? '',
-                        date: state.responseModel.story!.createdAt!)
-                  ],
+                      ),
+                      const SizedBox(height: 5),
+                      StoryImage(
+                          imageUrl: state.responseModel.story?.photoUrl ?? ''),
+                      const StoryReactButton(),
+                      StoryDescription(
+                          name: state.responseModel.story?.name ?? '',
+                          description:
+                              state.responseModel.story?.description ?? '',
+                          date: state.responseModel.story!.createdAt!)
+                    ],
+                  ),
                 ),
               );
             }
