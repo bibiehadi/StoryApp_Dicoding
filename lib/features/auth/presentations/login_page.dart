@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/commons/common.dart';
 import 'package:story_app/features/auth/bloc/auth_bloc.dart';
 import 'package:story_app/features/auth/data/models/request/login_request_model.dart';
 
@@ -155,10 +156,10 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           onLogin();
                         },
-                        child: const Text(
-                          'Login',
-                          style:
-                              TextStyle(decoration: TextDecoration.underline),
+                        child: Text(
+                          AppLocalizations.of(context)!.loginText,
+                          style: const TextStyle(
+                              decoration: TextDecoration.underline),
                         ),
                       ),
                       const SizedBox(
@@ -177,7 +178,8 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             context.push('/register');
                           },
-                          child: const Text('register')),
+                          child:
+                              Text(AppLocalizations.of(context)!.registerText)),
                     ],
                   ),
                 ),

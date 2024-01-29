@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/features/home/presentations/profile_screen.dart';
 import 'package:story_app/features/home/presentations/stories_screen.dart';
 import 'package:story_app/features/home/presentations/story_page.dart';
 import 'package:story_app/features/home/presentations/upload_screen.dart';
@@ -12,6 +13,8 @@ import '../../../features/home/home_screen.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _homeNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _uploadNavigatorKey =
+    GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _settingNavigatorKey =
     GlobalKey<NavigatorState>();
 
 final router = GoRouter(
@@ -49,7 +52,17 @@ final router = GoRouter(
               builder: (context, state) => const UploadScreen(),
             ),
           ],
-        )
+        ),
+        StatefulShellBranch(
+          navigatorKey: _settingNavigatorKey,
+          routes: [
+            GoRoute(
+              name: 'profile',
+              path: '/profile',
+              builder: (context, state) => const ProfileScreen(),
+            ),
+          ],
+        ),
       ],
     ),
     GoRoute(
@@ -68,6 +81,8 @@ final router = GoRouter(
   redirect: (context, state) async {
     final isLogin = await AuthLocalDatasource().isLogin();
     if (!isLogin) {
+      if (state.matchedLocation == '/login' ||
+          state.matchedLocation == '/register') return null;
       return '/login';
     }
     return null;

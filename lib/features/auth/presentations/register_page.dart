@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/commons/common.dart';
 import 'package:story_app/features/auth/bloc/auth_bloc.dart';
 import 'package:story_app/features/auth/data/models/request/register_request_model.dart';
 
@@ -191,9 +192,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           onRegister();
                         }
                       },
-                      child: const Text(
-                        'Register',
-                        style: TextStyle(decoration: TextDecoration.underline),
+                      child: Text(
+                        AppLocalizations.of(context)!.registerText,
+                        style: const TextStyle(
+                            decoration: TextDecoration.underline),
                       ),
                     ),
                     const SizedBox(
@@ -209,7 +211,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                       ),
-                      child: const Text("Login"),
+                      child: Text(
+                        AppLocalizations.of(context)!.loginText,
+                      ),
                     ),
                   ],
                 ),

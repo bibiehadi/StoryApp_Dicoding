@@ -42,10 +42,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
               icon: const Icon(Icons.logout)),
         ],
       ),
-      body: BlocConsumer<StoriesBloc, StoriesState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
+      body: BlocBuilder<StoriesBloc, StoriesState>(
         builder: (context, state) {
           if (state is StoriesLoading) {
             return const Center(

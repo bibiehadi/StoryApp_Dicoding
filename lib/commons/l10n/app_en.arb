@@ -1,0 +1,13 @@
+{
+    "loginText": "Login",
+    "registerText": "Register",
+    "uploadText": "Upload",
+    "chooseImageText": "Click for choose image",
+    "cameraText": "Camera",
+    "galeryText": "Galery",
+    "inputDescriptionText": "Enter description here",
+    "likeText": "likes",
+    "readMoreText": "Read more",
+    "readLessText": "Read less",
+    "languageText": "Language"
+}

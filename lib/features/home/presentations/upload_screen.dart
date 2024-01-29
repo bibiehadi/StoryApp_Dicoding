@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:story_app/commons/common.dart';
 import 'package:story_app/features/home/bloc/stories_bloc/stories_bloc.dart';
 import 'package:story_app/features/home/bloc/upload_story/upload_story_bloc.dart';
 
@@ -69,9 +70,15 @@ class _UploadScreenState extends State<UploadScreen> {
                       if (state is ImageGaleryFailed) {
                         return const Align(
                           alignment: Alignment.center,
-                          child: Icon(
-                            Icons.broken_image_rounded,
-                            size: 100,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.broken_image_rounded,
+                                size: 100,
+                              ),
+                              Text('Gagal mengambil gambar')
+                            ],
                           ),
                         );
                       }
@@ -80,19 +87,35 @@ class _UploadScreenState extends State<UploadScreen> {
                         return _showImage(state.imagePath);
                       }
                       if (state is UploadStorySuccess) {
-                        return const Align(
+                        return Align(
                           alignment: Alignment.center,
-                          child: Icon(
-                            Icons.image,
-                            size: 100,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.image,
+                                size: 100,
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!.chooseImageText,
+                              )
+                            ],
                           ),
                         );
                       }
-                      return const Align(
+                      return Align(
                         alignment: Alignment.center,
-                        child: Icon(
-                          Icons.image,
-                          size: 100,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.image,
+                              size: 100,
+                            ),
+                            Text(
+                              AppLocalizations.of(context)!.chooseImageText,
+                            )
+                          ],
                         ),
                       );
                     },
@@ -106,10 +129,12 @@ class _UploadScreenState extends State<UploadScreen> {
                 flex: 2,
                 child: TextFormField(
                   controller: descriptionController,
-                  maxLines: 4,
-                  decoration: const InputDecoration(
-                      hintText: "Enter description here..",
-                      border: OutlineInputBorder()),
+                  maxLines: 8,
+                  maxLength: 1000,
+                  decoration: InputDecoration(
+                      hintText:
+                          AppLocalizations.of(context)!.inputDescriptionText,
+                      border: const OutlineInputBorder()),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your description.';
@@ -118,33 +143,42 @@ class _UploadScreenState extends State<UploadScreen> {
                   },
                 ),
               ),
-              ElevatedButton(onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  if (imageFile != null) {
-                    print('hitted');
-                    _onUpload(context, imageFile!, descriptionController.text);
-                  }
-                }
-              }, child: BlocBuilder<UploadStoryBloc, UploadStoryState>(
-                builder: (context, state) {
-                  if (state is UploadStoryLoading) {
-                    return const CircularProgressIndicator();
-                  }
+              ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      if (imageFile != null) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        _onUpload(
+                            context, imageFile!, descriptionController.text);
+                      }
+                    }
+                  },
+                  child: BlocConsumer<UploadStoryBloc, UploadStoryState>(
+                    listener: (context, state) {
+                      if (state is UploadStoryFailed) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.message),
+                            duration: const Duration(seconds: 3),
+                          ),
+                        );
+                      }
 
-                  if (state is UploadStoryFailed) {
-                    return Text('Error : ${state.message}');
-                  }
+                      if (state is UploadStorySuccess) {
+                        descriptionController.clear();
+                        BlocProvider.of<StoriesBloc>(context)
+                            .add(GetStoriesEvent());
+                        context.go('/stories');
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is UploadStoryLoading) {
+                        return const CircularProgressIndicator();
+                      }
 
-                  if (state is UploadStorySuccess) {
-                    descriptionController.text = '';
-                    BlocProvider.of<StoriesBloc>(context)
-                        .add(GetStoriesEvent());
-                    context.go('/stories');
-                  }
-
-                  return const Text('Upload');
-                },
-              )),
+                      return const Text('Upload');
+                    },
+                  )),
             ],
           ),
         ),

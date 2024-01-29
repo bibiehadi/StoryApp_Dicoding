@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:story_app/commons/common.dart';
 
 import '../../../../commons/config/themes/theme.dart';
 
@@ -27,7 +28,7 @@ class _StoryDescriptionState extends State<StoryDescription> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '2048 Likes',
+            '2048 ${AppLocalizations.of(context)!.likeText}',
             style: myTextTheme.bodySmall
                 ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
           ),
@@ -52,14 +53,16 @@ class _StoryDescriptionState extends State<StoryDescription> {
                     )
                   ],
                 ),
-                maxLines: isReadMore ? 10 : 1,
+                maxLines: isReadMore ? null : 1,
               ),
               Container(
                 alignment: Alignment.bottomRight,
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
                   child: Text(
-                    isReadMore ? "Read less" : "Read more",
+                    isReadMore
+                        ? AppLocalizations.of(context)!.readLessText
+                        : AppLocalizations.of(context)!.readMoreText,
                     style: myTextTheme.bodySmall?.copyWith(color: Colors.black),
                   ),
                   onTap: () {

@@ -91,7 +91,6 @@ class StroiesDatasource {
       request.fields.addAll(fields);
       request.headers.addAll(headers);
 
-      print('hit');
       final http.StreamedResponse streamedResponse = await request.send();
       final int statusCode = streamedResponse.statusCode;
 
@@ -103,7 +102,6 @@ class StroiesDatasource {
           registerResponseModelFromJson(responseData),
         );
       }
-      print(responseList.toString());
 
       return const Left(
         "Upload image gagal",

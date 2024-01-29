@@ -1,0 +1,13 @@
+{
+    "loginText": "Masuk",
+    "registerText": "Daftar",
+    "uploadText": "Unggah",
+    "chooseImageText": "Klik untuk pilih gambar",
+    "cameraText": "Kamera",
+    "galeryText": "Galeri",
+    "inputDescriptionText": "Masukan deskripsi disini",
+    "likeText": "disukai",
+    "readMoreText": "Baca selengkapnya",
+    "readLessText": "Membaca lebih sedikit",
+    "languageText": "Bahasa"
+}
