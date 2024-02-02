@@ -11,11 +11,11 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthDatasource _auth_dataresource;
-  AuthBloc(this._auth_dataresource) : super(AuthInitial()) {
+  final AuthDatasource _authDatasource;
+  AuthBloc(this._authDatasource) : super(AuthInitial()) {
     on<LoginAuthEvent>((event, emit) async {
       emit(LoginLoading());
-      final response = await _auth_dataresource.login(event.requestModel);
+      final response = await _authDatasource.login(event.requestModel);
       response.fold(
         (left) => emit(LoginFailed(message: left)),
         (right) {
@@ -26,7 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<RegisterAuthEvent>((event, emit) async {
       emit(RegisterLoading());
-      final response = await _auth_dataresource.register(event.requestModel);
+      final response = await _authDatasource.register(event.requestModel);
       response.fold(
         (left) => emit(RegisterFailed(message: left)),
         (right) {

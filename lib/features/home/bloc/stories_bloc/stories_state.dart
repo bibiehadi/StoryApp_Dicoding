@@ -1,6 +1,6 @@
 part of 'stories_bloc.dart';
 
-sealed class StoriesState extends Equatable {
+abstract class StoriesState extends Equatable {
   const StoriesState();
 
   @override

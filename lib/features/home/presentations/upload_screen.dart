@@ -202,7 +202,7 @@ showModalUploadMenu(BuildContext context) {
             title: const Text('Photo'),
             onTap: () {
               _onCameraView(context);
-              Navigator.pop(context);
+              context.pop();
             },
           ),
           ListTile(
@@ -210,7 +210,7 @@ showModalUploadMenu(BuildContext context) {
             title: const Text('Galery'),
             onTap: () {
               _onGalleryView(context);
-              Navigator.pop(context);
+              context.pop();
             },
           ),
         ],

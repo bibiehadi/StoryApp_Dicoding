@@ -25,17 +25,11 @@ class _HomeScreenState extends State<HomeScreen> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         onTap: (index) {
-          // if (index == 1) {
-          //   Container(
-          //     child: showModalUploadMenu(context),
-          //   );
-          // } else {
           widget.child.goBranch(
             index,
             initialLocation: index == widget.child.currentIndex,
           );
           setState(() {});
-          // }
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),

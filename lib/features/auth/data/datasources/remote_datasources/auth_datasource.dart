@@ -14,7 +14,7 @@ class AuthDatasource {
   Future<Either<String, RegisterResponseModel>> register(
       RegisterRequestModel requestModel) async {
     try {
-      final url = Uri.parse("${Constanta.END_POINT}/register");
+      final url = Uri.parse("${Constanta.endPoint}/register");
       final response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
@@ -40,7 +40,7 @@ class AuthDatasource {
     final pref = AuthLocalDatasource();
 
     try {
-      final url = Uri.parse('${Constanta.END_POINT}/login');
+      final url = Uri.parse('${Constanta.endPoint}/login');
       final response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},

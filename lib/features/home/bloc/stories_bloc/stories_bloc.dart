@@ -8,12 +8,12 @@ part 'stories_event.dart';
 part 'stories_state.dart';
 
 class StoriesBloc extends Bloc<StoriesEvent, StoriesState> {
-  final StroiesDatasource _stories_datasource;
-  StoriesBloc(this._stories_datasource) : super(StoriesInitial()) {
+  final StroiesDatasource _storiesDatasource;
+  StoriesBloc(this._storiesDatasource) : super(StoriesInitial()) {
     on<GetStoriesEvent>(
       (event, emit) async {
         emit(StoriesLoading());
-        final response = await _stories_datasource.getStroies();
+        final response = await _storiesDatasource.getStroies();
         response.fold(
           (left) => emit(StoriesFailed(message: left)),
           (right) {

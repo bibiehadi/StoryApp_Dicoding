@@ -14,7 +14,7 @@ class StroiesDatasource {
   Future<Either<String, GetStoriesResponseModel>> getStroies() async {
     final token = await AuthLocalDatasource().getToken();
     try {
-      final url = Uri.parse("${Constanta.END_POINT}/stories");
+      final url = Uri.parse("${Constanta.endPoint}/stories");
       final response = await http.get(
         url,
         headers: <String, String>{
@@ -41,7 +41,7 @@ class StroiesDatasource {
       storyId) async {
     final token = await AuthLocalDatasource().getToken();
     try {
-      final url = Uri.parse("${Constanta.END_POINT}/stories/$storyId");
+      final url = Uri.parse("${Constanta.endPoint}/stories/$storyId");
       final response = await http.get(
         url,
         headers: <String, String>{
@@ -70,7 +70,7 @@ class StroiesDatasource {
     final XFile image = imageFile;
     final bytes = await image.readAsBytes();
     try {
-      final url = Uri.parse("${Constanta.END_POINT}/stories");
+      final url = Uri.parse("${Constanta.endPoint}/stories");
       var request = http.MultipartRequest('POST', url);
 
       final multiPartFile = http.MultipartFile.fromBytes("photo", bytes,

@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:story_app/commons/common.dart';
 import 'package:story_app/commons/config/themes/theme.dart';
 import 'package:story_app/features/auth/data/datasources/local_datasources/auth_local_datasource.dart';
+import 'package:story_app/features/language/data/models/language_model.dart';
 import 'package:story_app/features/language/language_bloc/language_bloc.dart';
-import 'package:story_app/features/language/models/language_model.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -41,6 +41,7 @@ class ProfileScreen extends StatelessWidget {
               },
               title: Text(AppLocalizations.of(context)!.languageText),
               leading: const Icon(Icons.language),
+              trailing: const Icon(Icons.arrow_right_sharp),
             )
           ],
         ),
@@ -74,7 +75,7 @@ showModalLanguangeMenu(BuildContext context) {
               BlocProvider.of<LanguageBloc>(context).add(
                 const ChangeLanguageEvent(selectedLanguage: Language.indonesia),
               );
-              Navigator.pop(context);
+              context.pop();
             },
           ),
           ListTile(
@@ -92,7 +93,7 @@ showModalLanguangeMenu(BuildContext context) {
                   content: Text('Change language success'),
                 ),
               );
-              Navigator.pop(context);
+              context.pop();
             },
           ),
         ],

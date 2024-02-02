@@ -8,8 +8,8 @@ part 'upload_story_event.dart';
 part 'upload_story_state.dart';
 
 class UploadStoryBloc extends Bloc<UploadStoryEvent, UploadStoryState> {
-  final StroiesDatasource _stories_datasource;
-  UploadStoryBloc(this._stories_datasource) : super(UploadStoryInitial()) {
+  final StroiesDatasource _storiesDatasource;
+  UploadStoryBloc(this._storiesDatasource) : super(UploadStoryInitial()) {
     on<PickImageGaleryEvent>(
       (event, emit) async {
         emit(ImageGaleryLoading());
@@ -60,7 +60,7 @@ class UploadStoryBloc extends Bloc<UploadStoryEvent, UploadStoryState> {
 
     on<DoUploadStoryEvent>((event, emit) async {
       emit(UploadStoryLoading());
-      final response = await _stories_datasource.postStory(
+      final response = await _storiesDatasource.postStory(
           imageFile: event.imageFile,
           description: event.description,
           lat: event.lat,

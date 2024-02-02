@@ -14,9 +14,13 @@ class PickImageCameraGaleryEvent extends UploadStoryEvent {}
 class DoUploadStoryEvent extends UploadStoryEvent {
   final XFile imageFile;
   final String description;
-  num? lat = 0;
-  num? lon = 0;
+  final num lat;
+  final num lon;
 
-  DoUploadStoryEvent(
-      {required this.imageFile, required this.description, this.lat, this.lon});
+  const DoUploadStoryEvent({
+    required this.imageFile,
+    required this.description,
+    required this.lat,
+    required this.lon,
+  });
 }

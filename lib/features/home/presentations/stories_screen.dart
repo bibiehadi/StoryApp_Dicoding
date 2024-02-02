@@ -17,7 +17,6 @@ class StoriesScreen extends StatefulWidget {
 class _StoriesScreenState extends State<StoriesScreen> {
   @override
   void initState() {
-    print('create');
     BlocProvider.of<StoriesBloc>(context).add(GetStoriesEvent());
     super.initState();
   }
@@ -54,23 +53,32 @@ class _StoriesScreenState extends State<StoriesScreen> {
 
           if (state is StoriesSuccess) {
             final stories = state.responseModel.listStory;
-            return SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  if (stories!.isNotEmpty)
-                    ...stories
-                        .map(
-                          (story) => StoryCard(story: story),
-                        )
-                        .toList()
-                ],
+            return RefreshIndicator(
+              onRefresh: () async {
+                BlocProvider.of<StoriesBloc>(context).add(GetStoriesEvent());
+              },
+              child: ListView.builder(
+                itemCount: stories?.length,
+                itemBuilder: (context, index) {
+                  return StoryCard(story: stories![index]);
+                },
               ),
             );
           }
+          //   if (stories!.isNotEmpty)
+          //     ...stories
+          //         .map(
+          //           (story) => StoryCard(story: story),
+          //         )
+          //         .toList();
+          // }
           return Container();
         },
       ),
     );
   }
 }
+
+// _onRefresh(BuildContext context) async {
+//   BlocProvider.of<StoriesBloc>(context).add(GetStoriesEvent());
+// }
