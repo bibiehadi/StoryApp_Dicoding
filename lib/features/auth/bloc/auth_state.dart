@@ -1,48 +1,63 @@
 part of 'auth_bloc.dart';
 
-abstract class AuthState extends Equatable {
-  @override
-  List<Object?> get props => [];
+@freezed
+class AuthState with _$AuthState {
+  const factory AuthState.intial() = _Initial;
+
+  const factory AuthState.loginLoading() = _LoginLoading;
+  const factory AuthState.loginFailed(String message) = _LoginFailed;
+  const factory AuthState.loginSuccess(LoginResponseModel responseModel) =
+      _LoginSuccess;
+
+  const factory AuthState.registerLoading() = _RegisterLoading;
+  const factory AuthState.registerFailed(String message) = _RegisterFailed;
+  const factory AuthState.registerSuccess(RegisterResponseModel responseModel) =
+      _RegisterSuccess;
 }
 
-final class AuthInitial extends AuthState {}
+// abstract class AuthState extends Equatable {
+//   @override
+//   List<Object?> get props => [];
+// }
 
-final class LoginLoading extends AuthState {}
+// final class AuthInitial extends AuthState {}
 
-final class LoginFailed extends AuthState {
-  final String message;
+// final class LoginLoading extends AuthState {}
 
-  LoginFailed({required this.message});
+// final class LoginFailed extends AuthState {
+//   final String message;
 
-  @override
-  List<Object?> get props => [message];
-}
+//   LoginFailed({required this.message});
 
-final class LoginSuccess extends AuthState {
-  final LoginResponseModel responseModel;
+//   @override
+//   List<Object?> get props => [message];
+// }
 
-  LoginSuccess({required this.responseModel});
+// final class LoginSuccess extends AuthState {
+//   final LoginResponseModel responseModel;
 
-  @override
-  List<Object?> get props => [responseModel];
-}
+//   LoginSuccess({required this.responseModel});
 
-final class RegisterLoading extends AuthState {}
+//   @override
+//   List<Object?> get props => [responseModel];
+// }
 
-final class RegisterFailed extends AuthState {
-  final String message;
+// final class RegisterLoading extends AuthState {}
 
-  RegisterFailed({required this.message});
+// final class RegisterFailed extends AuthState {
+//   final String message;
 
-  @override
-  List<Object?> get props => [message];
-}
+//   RegisterFailed({required this.message});
 
-final class RegisterSuccess extends AuthState {
-  final RegisterResponseModel responseModel;
+//   @override
+//   List<Object?> get props => [message];
+// }
 
-  RegisterSuccess({required this.responseModel});
+// final class RegisterSuccess extends AuthState {
+//   final RegisterResponseModel responseModel;
 
-  @override
-  List<Object?> get props => [responseModel];
-}
+//   RegisterSuccess({required this.responseModel});
+
+//   @override
+//   List<Object?> get props => [responseModel];
+// }

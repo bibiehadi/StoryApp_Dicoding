@@ -41,29 +41,26 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is RegisterFailed) {
-            context.pop();
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                duration: const Duration(seconds: 3),
-              ),
-            );
-          }
-
-          if (state is RegisterSuccess) {
-            context.pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.responseModel.message!),
-              ),
-            );
-            context.goNamed('login');
-          }
-
-          if (state is RegisterLoading) {
-            showDialog(
+          state.mapOrNull(
+            registerFailed: (value) {
+              context.pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(value.message),
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+            },
+            registerSuccess: (value) {
+              context.pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(value.responseModel.message!),
+                ),
+              );
+              context.goNamed('login');
+            },
+            registerLoading: (value) => showDialog(
               // The user CANNOT close this dialog  by pressing outsite it
               barrierDismissible: false,
               context: context,
@@ -88,8 +85,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 );
               },
-            );
-          }
+            ),
+          );
         },
         child: ListView(
           children: [
@@ -237,7 +234,6 @@ class _RegisterPageState extends State<RegisterPage> {
       password: _passwordController.text,
     );
 
-    BlocProvider.of<AuthBloc>(context)
-        .add(RegisterAuthEvent(requestModel: payload));
+    BlocProvider.of<AuthBloc>(context).add(AuthEvent.register(payload));
   }
 }

@@ -21,8 +21,8 @@ class StoryPage extends StatefulWidget {
 class _StoryPageState extends State<StoryPage> {
   @override
   void initState() {
-    BlocProvider.of<StoryDetailBloc>(context)
-        .add(GetDetailStoryEvent(storyId: widget.storyId));
+    BlocProvider.of<GetStoryDetailBloc>(context)
+        .add(GetStoryDetailEvent.add(widget.storyId));
     super.initState();
   }
 
@@ -44,22 +44,23 @@ class _StoryPageState extends State<StoryPage> {
                 icon: const Icon(Icons.more_vert_rounded)),
           ],
         ),
-        body: BlocBuilder<StoryDetailBloc, StoryDetailState>(
+        body: BlocBuilder<GetStoryDetailBloc, GetStoryDetailState>(
           builder: (context, state) {
-            if (state is StoryDetailFailed) {
-              return Center(
-                child: Text('FAILED: ${state.message}'),
-              );
-            }
-            if (state is StoryDetailLoading) {
-              return const Center(
+            return state.when(
+              initial: () => const Center(
                 child: CircularProgressIndicator(
                   color: secondaryColor,
                 ),
-              );
-            }
-            if (state is StoryDetailSuccess) {
-              return SingleChildScrollView(
+              ),
+              loading: () => const Center(
+                child: CircularProgressIndicator(
+                  color: secondaryColor,
+                ),
+              ),
+              failed: (message) => Center(
+                child: Text('FAILED: $message'),
+              ),
+              success: (responseModel) => SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: Column(
@@ -68,24 +69,21 @@ class _StoryPageState extends State<StoryPage> {
                     children: [
                       const SizedBox(height: 5),
                       ProfileBar(
-                        imageUrl: state.responseModel.story?.photoUrl ?? '',
-                        name: state.responseModel.story?.name ?? '',
+                        imageUrl: responseModel.story?.photoUrl ?? '',
+                        name: responseModel.story?.name ?? '',
                       ),
                       const SizedBox(height: 5),
-                      StoryImage(
-                          imageUrl: state.responseModel.story?.photoUrl ?? ''),
+                      StoryImage(imageUrl: responseModel.story?.photoUrl ?? ''),
                       const StoryReactButton(),
                       StoryDescription(
-                          name: state.responseModel.story?.name ?? '',
-                          description:
-                              state.responseModel.story?.description ?? '',
-                          date: state.responseModel.story!.createdAt!)
+                          name: responseModel.story?.name ?? '',
+                          description: responseModel.story?.description ?? '',
+                          date: responseModel.story!.createdAt!)
                     ],
                   ),
                 ),
-              );
-            }
-            return const SizedBox();
+              ),
+            );
           },
         ),
       ),

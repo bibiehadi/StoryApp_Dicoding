@@ -78,7 +78,7 @@ class _MainAppState extends State<MainApp> {
             ),
           ),
           BlocProvider(
-            create: (context) => StoryDetailBloc(
+            create: (context) => GetStoryDetailBloc(
               StroiesDatasource(),
             ),
           ),

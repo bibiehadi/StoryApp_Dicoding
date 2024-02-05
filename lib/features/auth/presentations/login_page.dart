@@ -32,28 +32,26 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is LoginFailed) {
-            context.pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                duration: const Duration(seconds: 3),
-              ),
-            );
-          }
-
-          if (state is LoginSuccess) {
-            context.pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.responseModel.message!),
-              ),
-            );
-            context.goNamed('home');
-          }
-
-          if (state is LoginLoading) {
-            showDialog(
+          state.mapOrNull(
+            loginFailed: (value) {
+              context.pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(value.message),
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+            },
+            loginSuccess: (value) {
+              context.pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(value.responseModel.message!),
+                ),
+              );
+              context.goNamed('home');
+            },
+            loginLoading: (value) => showDialog(
               // The user CANNOT close this dialog  by pressing outsite it
               barrierDismissible: false,
               context: context,
@@ -78,8 +76,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 );
               },
-            );
-          }
+            ),
+          );
         },
         child: SingleChildScrollView(
           child: Column(
@@ -197,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
       password: _passwordController.text,
     );
     BlocProvider.of<AuthBloc>(context).add(
-      LoginAuthEvent(requestModel: requestModel),
+      AuthEvent.login(requestModel),
     );
   }
 }

@@ -41,39 +41,37 @@ class _StoriesScreenState extends State<StoriesScreen> {
               icon: const Icon(Icons.logout)),
         ],
       ),
-      body: BlocBuilder<GetStoriesBloc, GetStoriesState>(
-        builder: (context, state) {
-          return state.when(
-            loading: () => const Center(
-              child: CircularProgressIndicator(
-                color: secondaryColor,
+      body: RefreshIndicator(
+        onRefresh: () async => BlocProvider.of<GetStoriesBloc>(context)
+            .add(const GetStoriesEvent.add()),
+        child: BlocBuilder<GetStoriesBloc, GetStoriesState>(
+          builder: (context, state) {
+            return state.when(
+              loading: () => const Center(
+                child: CircularProgressIndicator(
+                  color: secondaryColor,
+                ),
               ),
-            ),
-            success: (responseModel) {
-              final stories = responseModel.listStory;
-              return RefreshIndicator(
-                onRefresh: () async {
-                  BlocProvider.of<GetStoriesBloc>(context)
-                      .add(const GetStoriesEvent.add());
-                },
-                child: ListView.builder(
+              success: (responseModel) {
+                final stories = responseModel.listStory;
+                return ListView.builder(
                   itemCount: stories?.length,
                   itemBuilder: (context, index) {
                     return StoryCard(story: stories![index]);
                   },
+                );
+              },
+              initial: () => const Center(
+                child: CircularProgressIndicator(
+                  color: secondaryColor,
                 ),
-              );
-            },
-            initial: () => const Center(
-              child: CircularProgressIndicator(
-                color: secondaryColor,
               ),
-            ),
-            failed: (String message) => Center(
-              child: Text(message),
-            ),
-          );
-        },
+              failed: (String message) => Center(
+                child: Text(message),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
