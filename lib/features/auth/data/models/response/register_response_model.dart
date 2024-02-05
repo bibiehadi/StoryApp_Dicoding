@@ -2,7 +2,11 @@
 //
 //     final registerResponseModel = registerResponseModelFromJson(jsonString);
 
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:convert';
+
+part 'register_response_model.freezed.dart';
+part 'register_response_model.g.dart';
 
 RegisterResponseModel registerResponseModelFromJson(String str) =>
     RegisterResponseModel.fromJson(json.decode(str));
@@ -10,23 +14,13 @@ RegisterResponseModel registerResponseModelFromJson(String str) =>
 String registerResponseModelToJson(RegisterResponseModel data) =>
     json.encode(data.toJson());
 
-class RegisterResponseModel {
-  bool error;
-  String message;
-
-  RegisterResponseModel({
-    required this.error,
-    required this.message,
-  });
+@freezed
+class RegisterResponseModel with _$RegisterResponseModel {
+  const factory RegisterResponseModel({
+    bool? error,
+    String? message,
+  }) = _RegisterResponseModel;
 
   factory RegisterResponseModel.fromJson(Map<String, dynamic> json) =>
-      RegisterResponseModel(
-        error: json["error"],
-        message: json["message"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "error": error,
-        "message": message,
-      };
+      _$RegisterResponseModelFromJson(json);
 }

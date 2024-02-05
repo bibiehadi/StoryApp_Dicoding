@@ -2,7 +2,11 @@
 //
 //     final registerRequestModel = registerRequestModelFromJson(jsonString);
 
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:convert';
+
+part 'register_request_model.freezed.dart';
+part 'register_request_model.g.dart';
 
 RegisterRequestModel registerRequestModelFromJson(String str) =>
     RegisterRequestModel.fromJson(json.decode(str));
@@ -10,27 +14,14 @@ RegisterRequestModel registerRequestModelFromJson(String str) =>
 String registerRequestModelToJson(RegisterRequestModel data) =>
     json.encode(data.toJson());
 
-class RegisterRequestModel {
-  String? name;
-  String? email;
-  String? password;
-
-  RegisterRequestModel({
-    this.name,
-    this.email,
-    this.password,
-  });
+@freezed
+class RegisterRequestModel with _$RegisterRequestModel {
+  const factory RegisterRequestModel({
+    String? name,
+    String? email,
+    String? password,
+  }) = _RegisterRequestModel;
 
   factory RegisterRequestModel.fromJson(Map<String, dynamic> json) =>
-      RegisterRequestModel(
-        name: json["name"],
-        email: json["email"],
-        password: json["password"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "email": email,
-        "password": password,
-      };
+      _$RegisterRequestModelFromJson(json);
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/features/home/bloc/get_stories_bloc/get_stories_bloc.dart';
 
 import '../../../commons/config/themes/theme.dart';
 import '../../auth/data/datasources/local_datasources/auth_local_datasource.dart';
-import '../bloc/stories_bloc/stories_bloc.dart';
 import 'widget/story_card.dart';
 
 class StoriesScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class StoriesScreen extends StatefulWidget {
 class _StoriesScreenState extends State<StoriesScreen> {
   @override
   void initState() {
-    BlocProvider.of<StoriesBloc>(context).add(GetStoriesEvent());
+    BlocProvider.of<GetStoriesBloc>(context).add(const GetStoriesEvent.add());
     super.initState();
   }
 
@@ -41,38 +41,38 @@ class _StoriesScreenState extends State<StoriesScreen> {
               icon: const Icon(Icons.logout)),
         ],
       ),
-      body: BlocBuilder<StoriesBloc, StoriesState>(
+      body: BlocBuilder<GetStoriesBloc, GetStoriesState>(
         builder: (context, state) {
-          if (state is StoriesLoading) {
-            return const Center(
+          return state.when(
+            loading: () => const Center(
               child: CircularProgressIndicator(
                 color: secondaryColor,
               ),
-            );
-          }
-
-          if (state is StoriesSuccess) {
-            final stories = state.responseModel.listStory;
-            return RefreshIndicator(
-              onRefresh: () async {
-                BlocProvider.of<StoriesBloc>(context).add(GetStoriesEvent());
-              },
-              child: ListView.builder(
-                itemCount: stories?.length,
-                itemBuilder: (context, index) {
-                  return StoryCard(story: stories![index]);
+            ),
+            success: (responseModel) {
+              final stories = responseModel.listStory;
+              return RefreshIndicator(
+                onRefresh: () async {
+                  BlocProvider.of<GetStoriesBloc>(context)
+                      .add(const GetStoriesEvent.add());
                 },
+                child: ListView.builder(
+                  itemCount: stories?.length,
+                  itemBuilder: (context, index) {
+                    return StoryCard(story: stories![index]);
+                  },
+                ),
+              );
+            },
+            initial: () => const Center(
+              child: CircularProgressIndicator(
+                color: secondaryColor,
               ),
-            );
-          }
-          //   if (stories!.isNotEmpty)
-          //     ...stories
-          //         .map(
-          //           (story) => StoryCard(story: story),
-          //         )
-          //         .toList();
-          // }
-          return Container();
+            ),
+            failed: (String message) => Center(
+              child: Text(message),
+            ),
+          );
         },
       ),
     );
@@ -80,5 +80,5 @@ class _StoriesScreenState extends State<StoriesScreen> {
 }
 
 // _onRefresh(BuildContext context) async {
-//   BlocProvider.of<StoriesBloc>(context).add(GetStoriesEvent());
+//   BlocProvider.of<GetStoriesBloc>(context).add(GetStoriesEvent());
 // }

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:story_app/commons/common.dart';
-import 'package:story_app/features/home/bloc/stories_bloc/stories_bloc.dart';
+import 'package:story_app/features/home/bloc/get_stories_bloc/get_stories_bloc.dart';
 import 'package:story_app/features/home/bloc/upload_story/upload_story_bloc.dart';
 
 import '../../../commons/config/themes/theme.dart';
@@ -166,8 +166,8 @@ class _UploadScreenState extends State<UploadScreen> {
 
                       if (state is UploadStorySuccess) {
                         descriptionController.clear();
-                        BlocProvider.of<StoriesBloc>(context)
-                            .add(GetStoriesEvent());
+                        BlocProvider.of<GetStoriesBloc>(context)
+                            .add(const GetStoriesEvent.add());
                         context.go('/stories');
                       }
                     },

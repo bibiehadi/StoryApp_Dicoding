@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:story_app/commons/config/routers/router.dart';
 import 'package:story_app/features/auth/bloc/auth_bloc.dart';
 import 'package:story_app/features/auth/data/datasources/remote_datasources/auth_datasource.dart';
-import 'package:story_app/features/home/bloc/stories_bloc/stories_bloc.dart';
+import 'package:story_app/features/home/bloc/get_stories_bloc/get_stories_bloc.dart';
 import 'package:story_app/features/home/bloc/story_detail_bloc/story_detail_bloc.dart';
 import 'package:story_app/features/home/bloc/upload_story/upload_story_bloc.dart';
 import 'package:story_app/commons/common.dart';
@@ -73,9 +73,9 @@ class _MainAppState extends State<MainApp> {
             ),
           ),
           BlocProvider(
-            create: (context) => StoriesBloc(
+            create: (context) => GetStoriesBloc(
               StroiesDatasource(),
-            )..add(GetStoriesEvent()),
+            ),
           ),
           BlocProvider(
             create: (context) => StoryDetailBloc(

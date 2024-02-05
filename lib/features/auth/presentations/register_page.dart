@@ -56,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
             context.pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.responseModel.message),
+                content: Text(state.responseModel.message!),
               ),
             );
             context.goNamed('login');

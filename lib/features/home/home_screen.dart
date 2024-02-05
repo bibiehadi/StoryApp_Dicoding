@@ -22,8 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: secondaryColor,
         unselectedItemColor: thirdColor,
         currentIndex: widget.child.currentIndex,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
         onTap: (index) {
           widget.child.goBranch(
             index,

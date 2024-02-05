@@ -28,7 +28,7 @@ class AuthDatasource {
       }
 
       return Left(
-        registerResponseModelFromJson(response.body).message,
+        registerResponseModelFromJson(response.body).message!,
       );
     } catch (e) {
       return Left('Error : $e');
