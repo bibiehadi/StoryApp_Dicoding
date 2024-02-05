@@ -83,7 +83,7 @@ class _MainAppState extends State<MainApp> {
             ),
           ),
           BlocProvider(
-            create: (context) => UploadStoryBloc(
+            create: (context) => PickImageStoryBloc(
               StroiesDatasource(),
             ),
           )

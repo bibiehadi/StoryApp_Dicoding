@@ -65,10 +65,10 @@ class _UploadScreenState extends State<UploadScreen> {
                 flex: 3,
                 child: GestureDetector(
                   onTap: () => showModalUploadMenu(context),
-                  child: BlocBuilder<UploadStoryBloc, UploadStoryState>(
+                  child: BlocBuilder<PickImageStoryBloc, PickImageStoryState>(
                     builder: (context, state) {
-                      if (state is ImageGaleryFailed) {
-                        return const Align(
+                      return state.maybeWhen(
+                        failed: (message) => const Align(
                           alignment: Alignment.center,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -80,14 +80,29 @@ class _UploadScreenState extends State<UploadScreen> {
                               Text('Gagal mengambil gambar')
                             ],
                           ),
-                        );
-                      }
-                      if (state is ImageGalerySuccess) {
-                        imageFile = state.imageFile;
-                        return _showImage(state.imagePath);
-                      }
-                      if (state is UploadStorySuccess) {
-                        return Align(
+                        ),
+                        success: (imgPath, imgFile) {
+                          imageFile = imgFile;
+                          return _showImage(imgPath);
+                        },
+                        uploadSuccess: (responseModel) {
+                          return Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.image,
+                                  size: 100,
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)!.chooseImageText,
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                        initial: () => Align(
                           alignment: Alignment.center,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -101,21 +116,21 @@ class _UploadScreenState extends State<UploadScreen> {
                               )
                             ],
                           ),
-                        );
-                      }
-                      return Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.image,
-                              size: 100,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)!.chooseImageText,
-                            )
-                          ],
+                        ),
+                        orElse: () => Align(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.image,
+                                size: 100,
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!.chooseImageText,
+                              )
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -147,36 +162,37 @@ class _UploadScreenState extends State<UploadScreen> {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       if (imageFile != null) {
+                        print('uploading..');
                         FocusManager.instance.primaryFocus?.unfocus();
                         _onUpload(
                             context, imageFile!, descriptionController.text);
                       }
                     }
                   },
-                  child: BlocConsumer<UploadStoryBloc, UploadStoryState>(
+                  child: BlocConsumer<PickImageStoryBloc, PickImageStoryState>(
                     listener: (context, state) {
-                      if (state is UploadStoryFailed) {
-                        ScaffoldMessenger.of(context).showSnackBar(
+                      state.whenOrNull(
+                        uploadFailed: (message) =>
+                            ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(state.message),
+                            content: Text(message),
                             duration: const Duration(seconds: 3),
                           ),
-                        );
-                      }
-
-                      if (state is UploadStorySuccess) {
-                        descriptionController.clear();
-                        BlocProvider.of<GetStoriesBloc>(context)
-                            .add(const GetStoriesEvent.add());
-                        context.go('/stories');
-                      }
+                        ),
+                        uploadSuccess: (responseModel) {
+                          print('sukses');
+                          descriptionController.clear();
+                          BlocProvider.of<GetStoriesBloc>(context)
+                              .add(const GetStoriesEvent.add());
+                          context.go('/stories');
+                        },
+                      );
                     },
                     builder: (context, state) {
-                      if (state is UploadStoryLoading) {
-                        return const CircularProgressIndicator();
-                      }
-
-                      return const Text('Upload');
+                      return state.maybeWhen(
+                        uploadLoading: () => const CircularProgressIndicator(),
+                        orElse: () => const Text('Upload'),
+                      );
                     },
                   )),
             ],
@@ -220,7 +236,8 @@ showModalUploadMenu(BuildContext context) {
 }
 
 _onUpload(BuildContext context, XFile imageFile, String description) {
-  BlocProvider.of<UploadStoryBloc>(context).add(DoUploadStoryEvent(
+  BlocProvider.of<PickImageStoryBloc>(context)
+      .add(PickImageStoryEvent.uploadImage(
     imageFile: imageFile,
     description: description,
     lat: 0,
@@ -244,7 +261,8 @@ _onGalleryView(BuildContext context) async {
   final isMacOS = defaultTargetPlatform == TargetPlatform.macOS;
   final isLinux = defaultTargetPlatform == TargetPlatform.linux;
   if (isMacOS || isLinux) return;
-  BlocProvider.of<UploadStoryBloc>(context).add(PickImageGaleryEvent());
+  BlocProvider.of<PickImageStoryBloc>(context)
+      .add(const PickImageStoryEvent.pickImageGalery());
 }
 
 _onCameraView(BuildContext context) async {
@@ -252,5 +270,6 @@ _onCameraView(BuildContext context) async {
   final isiOS = defaultTargetPlatform == TargetPlatform.iOS;
   final isNotMobile = !(isAndroid || isiOS);
   if (isNotMobile) return;
-  BlocProvider.of<UploadStoryBloc>(context).add(PickImageCameraGaleryEvent());
+  BlocProvider.of<PickImageStoryBloc>(context)
+      .add(const PickImageStoryEvent.pickImagePhoto());
 }

@@ -1,35 +1,53 @@
 part of 'upload_story_bloc.dart';
 
-abstract class UploadStoryState {
-  const UploadStoryState();
+@freezed
+class PickImageStoryState with _$PickImageStoryState {
+  const factory PickImageStoryState.initial() = _Initial;
+  const factory PickImageStoryState.loading() = _PickImageStoryLoading;
+  const factory PickImageStoryState.failed(String message) =
+      _PickImageStoryFailed;
+  const factory PickImageStoryState.success(
+      {required String imagePath,
+      required XFile imageFile}) = _PickImageStorySuccess;
+
+  const factory PickImageStoryState.uploadLoading() = _PickImageUploadLoading;
+  const factory PickImageStoryState.uploadFailed(String message) =
+      _PickImageUploadFailed;
+  const factory PickImageStoryState.uploadSuccess(
+      RegisterResponseModel responseModel) = _PickImageUploadSuccess;
 }
 
-final class ImageGaleryLoading extends UploadStoryState {}
 
-final class ImageGaleryFailed extends UploadStoryState {
-  final String message;
-  const ImageGaleryFailed({required this.message});
-}
+// abstract class UploadStoryState {
+//   const UploadStoryState();
+// }
 
-final class ImageGalerySuccess extends UploadStoryState {
-  final String imagePath;
-  final XFile imageFile;
+// final class ImageGaleryLoading extends UploadStoryState {}
 
-  const ImageGalerySuccess({required this.imagePath, required this.imageFile});
-}
+// final class ImageGaleryFailed extends UploadStoryState {
+//   final String message;
+//   const ImageGaleryFailed({required this.message});
+// }
 
-final class UploadStoryInitial extends UploadStoryState {}
+// final class ImageGalerySuccess extends UploadStoryState {
+//   final String imagePath;
+//   final XFile imageFile;
 
-final class UploadStoryLoading extends UploadStoryState {}
+//   const ImageGalerySuccess({required this.imagePath, required this.imageFile});
+// }
 
-final class UploadStoryFailed extends UploadStoryState {
-  final String message;
+// final class UploadStoryInitial extends UploadStoryState {}
 
-  const UploadStoryFailed({required this.message});
-}
+// final class UploadStoryLoading extends UploadStoryState {}
 
-final class UploadStorySuccess extends UploadStoryState {
-  final RegisterResponseModel responseModel;
+// final class UploadStoryFailed extends UploadStoryState {
+//   final String message;
 
-  const UploadStorySuccess({required this.responseModel});
-}
+//   const UploadStoryFailed({required this.message});
+// }
+
+// final class UploadStorySuccess extends UploadStoryState {
+//   final RegisterResponseModel responseModel;
+
+//   const UploadStorySuccess({required this.responseModel});
+// }
