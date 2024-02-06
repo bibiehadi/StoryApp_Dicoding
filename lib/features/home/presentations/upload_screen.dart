@@ -162,7 +162,6 @@ class _UploadScreenState extends State<UploadScreen> {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       if (imageFile != null) {
-                        print('uploading..');
                         FocusManager.instance.primaryFocus?.unfocus();
                         _onUpload(
                             context, imageFile!, descriptionController.text);
@@ -180,10 +179,9 @@ class _UploadScreenState extends State<UploadScreen> {
                           ),
                         ),
                         uploadSuccess: (responseModel) {
-                          print('sukses');
                           descriptionController.clear();
                           BlocProvider.of<GetStoriesBloc>(context)
-                              .add(const GetStoriesEvent.add());
+                              .add(const GetStoriesEvent.first());
                           context.go('/stories');
                         },
                       );

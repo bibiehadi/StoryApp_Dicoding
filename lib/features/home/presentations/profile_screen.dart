@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:story_app/commons/common.dart';
 import 'package:story_app/commons/config/themes/theme.dart';
 import 'package:story_app/features/auth/data/datasources/local_datasources/auth_local_datasource.dart';
+import 'package:story_app/features/language/bloc/language_bloc.dart';
 import 'package:story_app/features/language/data/models/language_model.dart';
-import 'package:story_app/features/language/language_bloc/language_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

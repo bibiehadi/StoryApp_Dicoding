@@ -8,15 +8,42 @@ part 'get_stories_state.dart';
 part 'get_stories_bloc.freezed.dart';
 
 class GetStoriesBloc extends Bloc<GetStoriesEvent, GetStoriesState> {
+  int pageItem = 1;
+  int sizeItem = 5;
+  bool isLastPage = false;
+  List<ListStory> listStory = [];
   final StroiesDatasource _storiesDatasource;
   GetStoriesBloc(this._storiesDatasource) : super(const _Initial()) {
-    on<_Add>((event, emit) async {
+    on<_First>((event, emit) async {
       emit(const _GetStoriesLoading());
+      pageItem = 1;
+      sizeItem = 5;
+      listStory = [];
       final response = await _storiesDatasource.getStroies();
       response.fold(
         (left) => emit(_GetStoriesFailed(left)),
         (right) {
-          return emit(_GetStoriesSuccess(right));
+          listStory = right.listStory!;
+          pageItem += 1;
+          return emit(_GetStoriesSuccess(right.listStory));
+        },
+      );
+    });
+
+    on<_Add>((event, emit) async {
+      if (isLastPage) return;
+      if (pageItem == 1) emit(const _GetStoriesLoading());
+      final response = await _storiesDatasource.getStroies(pageItem, sizeItem);
+      response.fold(
+        (left) => emit(_GetStoriesFailed(left)),
+        (right) {
+          if (right.listStory!.length < sizeItem) {
+            isLastPage = true;
+          } else {
+            pageItem += 1;
+          }
+          listStory += right.listStory!;
+          return emit(_GetStoriesSuccess(listStory + right.listStory!));
         },
       );
     });

@@ -55,14 +55,15 @@ class _StoryDescriptionState extends State<StoryDescription> {
                 ),
                 maxLines: isReadMore ? null : 1,
               ),
-              Container(
-                alignment: Alignment.bottomRight,
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
+              const SizedBox(
+                width: 5,
+              ),
+              if (widget.description.length > 30)
+                InkWell(
                   child: Text(
                     isReadMore
-                        ? AppLocalizations.of(context)!.readLessText
-                        : AppLocalizations.of(context)!.readMoreText,
+                        ? ''
+                        : "..${AppLocalizations.of(context)!.readMoreText}",
                     style: myTextTheme.bodySmall?.copyWith(color: Colors.black),
                   ),
                   onTap: () {
@@ -70,9 +71,11 @@ class _StoryDescriptionState extends State<StoryDescription> {
                       isReadMore = !isReadMore;
                     });
                   },
-                ),
-              )
+                )
             ],
+          ),
+          const SizedBox(
+            height: 5,
           ),
           Text(
             DateFormat('MMMM dd, yyyy').format(widget.date).toString(),

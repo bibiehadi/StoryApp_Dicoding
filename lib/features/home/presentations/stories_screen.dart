@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/features/home/bloc/get_stories_bloc/get_stories_bloc.dart';
+import 'package:story_app/features/home/data/models/response/get_stories_response_model.dart';
 
 import '../../../commons/config/themes/theme.dart';
 import '../../auth/data/datasources/local_datasources/auth_local_datasource.dart';
@@ -15,10 +16,25 @@ class StoriesScreen extends StatefulWidget {
 }
 
 class _StoriesScreenState extends State<StoriesScreen> {
+  final ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
-    BlocProvider.of<GetStoriesBloc>(context).add(const GetStoriesEvent.add());
+    BlocProvider.of<GetStoriesBloc>(context).add(const GetStoriesEvent.first());
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent) {
+        BlocProvider.of<GetStoriesBloc>(context)
+            .add(const GetStoriesEvent.add());
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,7 +59,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () async => BlocProvider.of<GetStoriesBloc>(context)
-            .add(const GetStoriesEvent.add()),
+            .add(const GetStoriesEvent.first()),
         child: BlocBuilder<GetStoriesBloc, GetStoriesState>(
           builder: (context, state) {
             return state.when(
@@ -52,12 +68,21 @@ class _StoriesScreenState extends State<StoriesScreen> {
                   color: secondaryColor,
                 ),
               ),
-              success: (responseModel) {
-                final stories = responseModel.listStory;
+              success: (listStory) {
+                final stories = listStory;
                 return ListView.builder(
-                  itemCount: stories?.length,
+                  controller: scrollController,
+                  itemCount: stories!.length + 1,
                   itemBuilder: (context, index) {
-                    return StoryCard(story: stories![index]);
+                    if (index == stories.length) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    return StoryCard(story: stories[index]);
                   },
                 );
               },

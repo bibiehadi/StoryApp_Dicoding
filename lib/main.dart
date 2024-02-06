@@ -7,9 +7,9 @@ import 'package:story_app/features/home/bloc/get_stories_bloc/get_stories_bloc.d
 import 'package:story_app/features/home/bloc/story_detail_bloc/story_detail_bloc.dart';
 import 'package:story_app/features/home/bloc/upload_story/upload_story_bloc.dart';
 import 'package:story_app/commons/common.dart';
+import 'package:story_app/features/language/bloc/language_bloc.dart';
 import 'package:story_app/features/language/data/datasource/local_datasource/languange_datasource.dart';
 import 'package:story_app/features/language/data/models/language_model.dart';
-import 'package:story_app/features/language/language_bloc/language_bloc.dart';
 
 import 'commons/config/themes/theme.dart';
 import 'features/home/data/datasources/remote_datasources/stories_datasource.dart';

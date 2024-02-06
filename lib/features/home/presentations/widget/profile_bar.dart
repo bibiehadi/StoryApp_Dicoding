@@ -7,10 +7,14 @@ class ProfileBar extends StatelessWidget {
     super.key,
     required this.imageUrl,
     required this.name,
+    required this.lat,
+    required this.lon,
   });
 
   final String imageUrl;
   final String name;
+  final num lat;
+  final num lon;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +39,20 @@ class ProfileBar extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        Text(
-          name,
-          style: myTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              name,
+              style: myTextTheme.titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'lat: $lat, long: $lon',
+              style:
+                  myTextTheme.titleSmall?.copyWith(fontWeight: FontWeight.w300),
+            ),
+          ],
         ),
       ],
     );

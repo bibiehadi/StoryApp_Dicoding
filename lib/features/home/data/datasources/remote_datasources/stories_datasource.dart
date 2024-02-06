@@ -11,10 +11,12 @@ import 'package:story_app/features/home/data/models/response/get_detail_story_re
 import 'package:story_app/features/home/data/models/response/get_stories_response_model.dart';
 
 class StroiesDatasource {
-  Future<Either<String, GetStoriesResponseModel>> getStroies() async {
+  Future<Either<String, GetStoriesResponseModel>> getStroies(
+      [int page = 1, int size = 5]) async {
     final token = await AuthLocalDatasource().getToken();
     try {
-      final url = Uri.parse("${Constanta.endPoint}/stories");
+      final url =
+          Uri.parse("${Constanta.endPoint}/stories?page=$page&size=$size");
       final response = await http.get(
         url,
         headers: <String, String>{
