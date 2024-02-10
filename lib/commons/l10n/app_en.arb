@@ -1,13 +1,14 @@
 {
     "loginText": "Login",
     "registerText": "Register",
-    "uploadText": "Upload",
+    "uploadText": "Share",
+    "locationText": "Add Location",
     "chooseImageText": "Click for choose image",
     "cameraText": "Camera",
     "galeryText": "Galery",
-    "inputDescriptionText": "Enter description here",
+    "inputDescriptionText": "Write caption here",
     "likeText": "likes",
-    "readMoreText": "Read more",
+    "readMoreText": "More",
     "readLessText": "Read less",
     "languageText": "Language"
-}
+} 

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:story_app/commons/common.dart';
 import 'package:story_app/features/home/bloc/get_stories_bloc/get_stories_bloc.dart';
@@ -22,6 +23,8 @@ class _UploadScreenState extends State<UploadScreen> {
   final formKey = GlobalKey<FormState>();
   XFile? imageFile;
   late TextEditingController descriptionController;
+  LatLng? selectedLocation;
+  String address = '';
   final isWeb = kIsWeb;
 
   @override
@@ -44,7 +47,7 @@ class _UploadScreenState extends State<UploadScreen> {
         foregroundColor: secondaryColor,
         surfaceTintColor: primaryColor,
         title: Text(
-          'Upload Story',
+          'New Story',
           style: myTextTheme.titleLarge,
         ),
         actions: [
@@ -65,7 +68,62 @@ class _UploadScreenState extends State<UploadScreen> {
                 flex: 3,
                 child: GestureDetector(
                   onTap: () => showModalUploadMenu(context),
-                  child: BlocBuilder<PickImageStoryBloc, PickImageStoryState>(
+                  child: BlocConsumer<PickImageStoryBloc, PickImageStoryState>(
+                    listener: (context, state) {
+                      state.whenOrNull(
+                        uploadFailed: (message) {
+                          context.pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(message),
+                              duration: const Duration(seconds: 3),
+                            ),
+                          );
+                        },
+                        uploadSuccess: (responseModel) {
+                          context.pop();
+                          descriptionController.clear();
+                          selectedLocation = null;
+                          imageFile = null;
+                          address = '';
+                          setState(() {});
+                          BlocProvider.of<GetStoriesBloc>(context)
+                              .add(const GetStoriesEvent.first());
+                          context.go('/stories');
+                        },
+                        uploadLoading: () {
+                          showDialog(
+                            // The user CANNOT close this dialog  by pressing outsite it
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (_) {
+                              return const Dialog(
+                                // The background color
+                                backgroundColor: Colors.white,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // The loading indicator
+                                      CircularProgressIndicator(),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      // Some text
+                                      Text('Loading...')
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        success: (imagePath, imageFile) {
+                          setState(() {});
+                        },
+                      );
+                    },
                     builder: (context, state) {
                       return state.maybeWhen(
                         failed: (message) => const Align(
@@ -140,6 +198,19 @@ class _UploadScreenState extends State<UploadScreen> {
               const SizedBox(
                 height: 5.0,
               ),
+              ListTile(
+                onTap: () async {
+                  List? result = await context.push<List>('/add_location');
+                  selectedLocation = result![0];
+                  address = result[1] ?? '';
+                  setState(() {});
+                },
+                title: Text((selectedLocation == null)
+                    ? AppLocalizations.of(context)!.locationText
+                    : address),
+                leading: const Icon(Icons.location_on),
+                trailing: const Icon(Icons.arrow_right_sharp),
+              ),
               Expanded(
                 flex: 2,
                 child: TextFormField(
@@ -147,9 +218,10 @@ class _UploadScreenState extends State<UploadScreen> {
                   maxLines: 8,
                   maxLength: 1000,
                   decoration: InputDecoration(
-                      hintText:
-                          AppLocalizations.of(context)!.inputDescriptionText,
-                      border: const OutlineInputBorder()),
+                    hintText:
+                        AppLocalizations.of(context)!.inputDescriptionText,
+                    // border: const OutlineInputBorder(),
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your description.';
@@ -159,40 +231,21 @@ class _UploadScreenState extends State<UploadScreen> {
                 ),
               ),
               ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      if (imageFile != null) {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        _onUpload(
-                            context, imageFile!, descriptionController.text);
-                      }
-                    }
-                  },
-                  child: BlocConsumer<PickImageStoryBloc, PickImageStoryState>(
-                    listener: (context, state) {
-                      state.whenOrNull(
-                        uploadFailed: (message) =>
-                            ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(message),
-                            duration: const Duration(seconds: 3),
-                          ),
-                        ),
-                        uploadSuccess: (responseModel) {
-                          descriptionController.clear();
-                          BlocProvider.of<GetStoriesBloc>(context)
-                              .add(const GetStoriesEvent.first());
-                          context.go('/stories');
-                        },
-                      );
-                    },
-                    builder: (context, state) {
-                      return state.maybeWhen(
-                        uploadLoading: () => const CircularProgressIndicator(),
-                        orElse: () => const Text('Upload'),
-                      );
-                    },
-                  )),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    _onUpload(
+                      context,
+                      imageFile!,
+                      descriptionController.text,
+                      selectedLocation,
+                    );
+                  }
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.uploadText,
+                ),
+              ),
             ],
           ),
         ),
@@ -233,13 +286,14 @@ showModalUploadMenu(BuildContext context) {
   );
 }
 
-_onUpload(BuildContext context, XFile imageFile, String description) {
+_onUpload(
+    BuildContext context, XFile imageFile, String description, LatLng? latLng) {
   BlocProvider.of<PickImageStoryBloc>(context)
       .add(PickImageStoryEvent.uploadImage(
     imageFile: imageFile,
     description: description,
-    lat: 0,
-    lon: 0,
+    lat: latLng == null ? 0 : latLng.latitude,
+    lon: latLng == null ? 0 : latLng.longitude,
   ));
 }
 

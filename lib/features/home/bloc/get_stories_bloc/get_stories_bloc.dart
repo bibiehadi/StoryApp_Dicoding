@@ -19,19 +19,22 @@ class GetStoriesBloc extends Bloc<GetStoriesEvent, GetStoriesState> {
       pageItem = 1;
       sizeItem = 5;
       listStory = [];
-      final response = await _storiesDatasource.getStroies();
+      final response = await _storiesDatasource.getStroies(pageItem, sizeItem);
       response.fold(
         (left) => emit(_GetStoriesFailed(left)),
         (right) {
           listStory = right.listStory!;
           pageItem += 1;
-          return emit(_GetStoriesSuccess(right.listStory));
+          isLastPage = false;
+          return emit(_GetStoriesSuccess(
+              listStory: right.listStory, isLastPage: isLastPage));
         },
       );
     });
 
     on<_Add>((event, emit) async {
       if (isLastPage) return;
+      print(pageItem);
       if (pageItem == 1) emit(const _GetStoriesLoading());
       final response = await _storiesDatasource.getStroies(pageItem, sizeItem);
       response.fold(
@@ -43,7 +46,8 @@ class GetStoriesBloc extends Bloc<GetStoriesEvent, GetStoriesState> {
             pageItem += 1;
           }
           listStory += right.listStory!;
-          return emit(_GetStoriesSuccess(listStory + right.listStory!));
+          return emit(
+              _GetStoriesSuccess(listStory: listStory, isLastPage: isLastPage));
         },
       );
     });

@@ -42,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
               title: Text(AppLocalizations.of(context)!.languageText),
               leading: const Icon(Icons.language),
               trailing: const Icon(Icons.arrow_right_sharp),
-            )
+            ),
           ],
         ),
       ),

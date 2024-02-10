@@ -19,6 +19,7 @@ class StoryPage extends StatefulWidget {
 }
 
 class _StoryPageState extends State<StoryPage> {
+  String location = '';
   @override
   void initState() {
     BlocProvider.of<GetStoryDetailBloc>(context)
@@ -60,9 +61,8 @@ class _StoryPageState extends State<StoryPage> {
               failed: (message) => Center(
                 child: Text('FAILED: $message'),
               ),
-              success: (responseModel) => SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              success: (responseModel) {
+                return SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,6 +71,8 @@ class _StoryPageState extends State<StoryPage> {
                       ProfileBar(
                         imageUrl: responseModel.story?.photoUrl ?? '',
                         name: responseModel.story?.name ?? '',
+                        withLocation: (responseModel.story?.lat != 0 &&
+                            responseModel.story?.lon != 0),
                         lat: responseModel.story?.lat ?? 0,
                         lon: responseModel.story?.lon ?? 0,
                       ),
@@ -83,8 +85,8 @@ class _StoryPageState extends State<StoryPage> {
                           date: responseModel.story!.createdAt!)
                     ],
                   ),
-                ),
-              ),
+                );
+              },
             );
           },
         ),

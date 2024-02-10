@@ -409,7 +409,8 @@ mixin _$GetStoriesState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) failed,
-    required TResult Function(List<ListStory>? listStory) success,
+    required TResult Function(List<ListStory>? listStory, bool? isLastPage)
+        success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -417,7 +418,7 @@ mixin _$GetStoriesState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? failed,
-    TResult? Function(List<ListStory>? listStory)? success,
+    TResult? Function(List<ListStory>? listStory, bool? isLastPage)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -425,7 +426,7 @@ mixin _$GetStoriesState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? failed,
-    TResult Function(List<ListStory>? listStory)? success,
+    TResult Function(List<ListStory>? listStory, bool? isLastPage)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -515,7 +516,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) failed,
-    required TResult Function(List<ListStory>? listStory) success,
+    required TResult Function(List<ListStory>? listStory, bool? isLastPage)
+        success,
   }) {
     return initial();
   }
@@ -526,7 +528,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? failed,
-    TResult? Function(List<ListStory>? listStory)? success,
+    TResult? Function(List<ListStory>? listStory, bool? isLastPage)? success,
   }) {
     return initial?.call();
   }
@@ -537,7 +539,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? failed,
-    TResult Function(List<ListStory>? listStory)? success,
+    TResult Function(List<ListStory>? listStory, bool? isLastPage)? success,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -629,7 +631,8 @@ class _$GetStoriesLoadingImpl implements _GetStoriesLoading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) failed,
-    required TResult Function(List<ListStory>? listStory) success,
+    required TResult Function(List<ListStory>? listStory, bool? isLastPage)
+        success,
   }) {
     return loading();
   }
@@ -640,7 +643,7 @@ class _$GetStoriesLoadingImpl implements _GetStoriesLoading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? failed,
-    TResult? Function(List<ListStory>? listStory)? success,
+    TResult? Function(List<ListStory>? listStory, bool? isLastPage)? success,
   }) {
     return loading?.call();
   }
@@ -651,7 +654,7 @@ class _$GetStoriesLoadingImpl implements _GetStoriesLoading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? failed,
-    TResult Function(List<ListStory>? listStory)? success,
+    TResult Function(List<ListStory>? listStory, bool? isLastPage)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -770,7 +773,8 @@ class _$GetStoriesFailedImpl implements _GetStoriesFailed {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) failed,
-    required TResult Function(List<ListStory>? listStory) success,
+    required TResult Function(List<ListStory>? listStory, bool? isLastPage)
+        success,
   }) {
     return failed(message);
   }
@@ -781,7 +785,7 @@ class _$GetStoriesFailedImpl implements _GetStoriesFailed {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? failed,
-    TResult? Function(List<ListStory>? listStory)? success,
+    TResult? Function(List<ListStory>? listStory, bool? isLastPage)? success,
   }) {
     return failed?.call(message);
   }
@@ -792,7 +796,7 @@ class _$GetStoriesFailedImpl implements _GetStoriesFailed {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? failed,
-    TResult Function(List<ListStory>? listStory)? success,
+    TResult Function(List<ListStory>? listStory, bool? isLastPage)? success,
     required TResult orElse(),
   }) {
     if (failed != null) {
@@ -855,7 +859,7 @@ abstract class _$$GetStoriesSuccessImplCopyWith<$Res> {
           $Res Function(_$GetStoriesSuccessImpl) then) =
       __$$GetStoriesSuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<ListStory>? listStory});
+  $Res call({List<ListStory>? listStory, bool? isLastPage});
 }
 
 /// @nodoc
@@ -870,12 +874,17 @@ class __$$GetStoriesSuccessImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? listStory = freezed,
+    Object? isLastPage = freezed,
   }) {
     return _then(_$GetStoriesSuccessImpl(
-      freezed == listStory
+      listStory: freezed == listStory
           ? _value._listStory
           : listStory // ignore: cast_nullable_to_non_nullable
               as List<ListStory>?,
+      isLastPage: freezed == isLastPage
+          ? _value.isLastPage
+          : isLastPage // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -883,7 +892,8 @@ class __$$GetStoriesSuccessImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$GetStoriesSuccessImpl implements _GetStoriesSuccess {
-  const _$GetStoriesSuccessImpl(final List<ListStory>? listStory)
+  const _$GetStoriesSuccessImpl(
+      {final List<ListStory>? listStory, this.isLastPage})
       : _listStory = listStory;
 
   final List<ListStory>? _listStory;
@@ -897,8 +907,11 @@ class _$GetStoriesSuccessImpl implements _GetStoriesSuccess {
   }
 
   @override
+  final bool? isLastPage;
+
+  @override
   String toString() {
-    return 'GetStoriesState.success(listStory: $listStory)';
+    return 'GetStoriesState.success(listStory: $listStory, isLastPage: $isLastPage)';
   }
 
   @override
@@ -907,12 +920,14 @@ class _$GetStoriesSuccessImpl implements _GetStoriesSuccess {
         (other.runtimeType == runtimeType &&
             other is _$GetStoriesSuccessImpl &&
             const DeepCollectionEquality()
-                .equals(other._listStory, _listStory));
+                .equals(other._listStory, _listStory) &&
+            (identical(other.isLastPage, isLastPage) ||
+                other.isLastPage == isLastPage));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_listStory));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_listStory), isLastPage);
 
   @JsonKey(ignore: true)
   @override
@@ -927,9 +942,10 @@ class _$GetStoriesSuccessImpl implements _GetStoriesSuccess {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String message) failed,
-    required TResult Function(List<ListStory>? listStory) success,
+    required TResult Function(List<ListStory>? listStory, bool? isLastPage)
+        success,
   }) {
-    return success(listStory);
+    return success(listStory, isLastPage);
   }
 
   @override
@@ -938,9 +954,9 @@ class _$GetStoriesSuccessImpl implements _GetStoriesSuccess {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String message)? failed,
-    TResult? Function(List<ListStory>? listStory)? success,
+    TResult? Function(List<ListStory>? listStory, bool? isLastPage)? success,
   }) {
-    return success?.call(listStory);
+    return success?.call(listStory, isLastPage);
   }
 
   @override
@@ -949,11 +965,11 @@ class _$GetStoriesSuccessImpl implements _GetStoriesSuccess {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String message)? failed,
-    TResult Function(List<ListStory>? listStory)? success,
+    TResult Function(List<ListStory>? listStory, bool? isLastPage)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(listStory);
+      return success(listStory, isLastPage);
     }
     return orElse();
   }
@@ -997,10 +1013,12 @@ class _$GetStoriesSuccessImpl implements _GetStoriesSuccess {
 }
 
 abstract class _GetStoriesSuccess implements GetStoriesState {
-  const factory _GetStoriesSuccess(final List<ListStory>? listStory) =
-      _$GetStoriesSuccessImpl;
+  const factory _GetStoriesSuccess(
+      {final List<ListStory>? listStory,
+      final bool? isLastPage}) = _$GetStoriesSuccessImpl;
 
   List<ListStory>? get listStory;
+  bool? get isLastPage;
   @JsonKey(ignore: true)
   _$$GetStoriesSuccessImplCopyWith<_$GetStoriesSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;

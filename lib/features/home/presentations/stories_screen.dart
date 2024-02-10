@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/features/home/bloc/get_stories_bloc/get_stories_bloc.dart';
-import 'package:story_app/features/home/data/models/response/get_stories_response_model.dart';
 
 import '../../../commons/config/themes/theme.dart';
 import '../../auth/data/datasources/local_datasources/auth_local_datasource.dart';
@@ -68,21 +67,21 @@ class _StoriesScreenState extends State<StoriesScreen> {
                   color: secondaryColor,
                 ),
               ),
-              success: (listStory) {
+              success: (listStory, isLastPage) {
                 final stories = listStory;
                 return ListView.builder(
                   controller: scrollController,
-                  itemCount: stories!.length + 1,
+                  itemCount:
+                      (isLastPage!) ? stories!.length : stories!.length + 1,
                   itemBuilder: (context, index) {
-                    if (index == stories.length) {
-                      return const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    }
-                    return StoryCard(story: stories[index]);
+                    return (index >= stories.length)
+                        ? const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                        : StoryCard(story: stories[index]);
                   },
                 );
               },
@@ -92,7 +91,18 @@ class _StoriesScreenState extends State<StoriesScreen> {
                 ),
               ),
               failed: (String message) => Center(
-                child: Text(message),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(message),
+                    ElevatedButton(
+                        onPressed: () {
+                          _onRefresh(context);
+                        },
+                        child: const Text('Refresh'))
+                  ],
+                ),
               ),
             );
           },
@@ -102,6 +112,6 @@ class _StoriesScreenState extends State<StoriesScreen> {
   }
 }
 
-// _onRefresh(BuildContext context) async {
-//   BlocProvider.of<GetStoriesBloc>(context).add(GetStoriesEvent());
-// }
+_onRefresh(BuildContext context) async {
+  BlocProvider.of<GetStoriesBloc>(context).add(const GetStoriesEvent.first());
+}

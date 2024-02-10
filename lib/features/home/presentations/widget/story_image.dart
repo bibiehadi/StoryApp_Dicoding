@@ -17,18 +17,21 @@ class StoryImage extends StatelessWidget {
         imageUrl: imageUrl,
         imageBuilder: (context, imageProvider) => ClipRRect(
           child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width * 2 / 3,
+            width: MediaQuery.of(context).size.width / 3,
+            height: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.08),
-              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.fitWidth,
+              ),
             ),
           ),
         ),
         progressIndicatorBuilder: (context, url, progress) => ClipRRect(
           child: Container(
             width: MediaQuery.of(context).size.width / 3,
-            height: MediaQuery.of(context).size.width * 2 / 3,
+            height: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.08),
             ),
@@ -40,7 +43,7 @@ class StoryImage extends StatelessWidget {
         errorWidget: (context, url, progress) => ClipRRect(
           child: Container(
             width: MediaQuery.of(context).size.width / 3,
-            height: MediaQuery.of(context).size.width * 2 / 3,
+            height: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.08),
             ),

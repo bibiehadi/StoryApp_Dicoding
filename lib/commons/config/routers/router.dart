@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/features/home/presentations/add_location_screen.dart';
+import 'package:story_app/features/home/presentations/map_screen.dart';
 import 'package:story_app/features/home/presentations/profile_screen.dart';
 import 'package:story_app/features/home/presentations/stories_screen.dart';
 import 'package:story_app/features/home/presentations/story_page.dart';
@@ -64,6 +66,21 @@ final router = GoRouter(
           ],
         ),
       ],
+    ),
+    GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
+      name: 'map',
+      path: '/map',
+      builder: (context, state) => MapScreen(
+        lat: state.uri.queryParameters['lat'] ?? '0',
+        lon: state.uri.queryParameters['lon'] ?? '0',
+      ),
+    ),
+    GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
+      name: 'add_location',
+      path: '/add_location',
+      builder: (context, state) => const AddLocationScreen(),
     ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,

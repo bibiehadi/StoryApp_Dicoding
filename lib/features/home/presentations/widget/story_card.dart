@@ -22,15 +22,14 @@ class _StoryCardState extends State<StoryCard> {
   bool isReadMore = false;
   bool isLike = false;
   bool isBookmark = false;
+  String location = '';
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Card(
-        surfaceTintColor: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Container(
         color: Colors.white,
-        shadowColor: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,8 +38,7 @@ class _StoryCardState extends State<StoryCard> {
             ProfileBar(
               imageUrl: widget.story.photoUrl ?? '',
               name: widget.story.name ?? '',
-              lat: widget.story.lat ?? 0,
-              lon: widget.story.lon ?? 0,
+              withLocation: false,
             ),
             const SizedBox(height: 5),
             GestureDetector(
