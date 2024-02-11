@@ -63,7 +63,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // The loading indicator
                         CircularProgressIndicator(),
                         SizedBox(
                           height: 15,

@@ -62,24 +62,20 @@ class _RegisterPageState extends State<RegisterPage> {
               context.goNamed('login');
             },
             registerLoading: (value) => showDialog(
-              // The user CANNOT close this dialog  by pressing outsite it
               barrierDismissible: false,
               context: context,
               builder: (_) {
                 return const Dialog(
-                  // The background color
                   backgroundColor: Colors.white,
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // The loading indicator
                         CircularProgressIndicator(),
                         SizedBox(
                           height: 15,
                         ),
-                        // Some text
                         Text('Loading...')
                       ],
                     ),

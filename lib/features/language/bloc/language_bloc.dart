@@ -12,7 +12,6 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
       (event, emit) async {
         await LanguangeDatasource().setLanguange(event.selectedLanguage);
         emit(ChangedLanguageState(selectedLanguage: event.selectedLanguage));
-        // }
       },
     );
   }

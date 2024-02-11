@@ -9,18 +9,14 @@ class ProfileBar extends StatefulWidget {
     super.key,
     required this.imageUrl,
     required this.name,
-    // required this.location,
     this.lat,
     this.lon,
-    // required this.withLocation,
   });
 
   final String imageUrl;
   final String name;
-  // final String location;
   final num? lat;
   final num? lon;
-  // final bool withLocation;
 
   @override
   State<ProfileBar> createState() => _ProfileBarState();

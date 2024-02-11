@@ -94,24 +94,20 @@ class _UploadScreenState extends State<UploadScreen> {
                         },
                         uploadLoading: () {
                           showDialog(
-                            // The user CANNOT close this dialog  by pressing outsite it
                             barrierDismissible: false,
                             context: context,
                             builder: (_) {
                               return const Dialog(
-                                // The background color
                                 backgroundColor: Colors.white,
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(vertical: 20),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      // The loading indicator
                                       CircularProgressIndicator(),
                                       SizedBox(
                                         height: 15,
                                       ),
-                                      // Some text
                                       Text('Loading...')
                                     ],
                                   ),
@@ -222,7 +218,6 @@ class _UploadScreenState extends State<UploadScreen> {
                   decoration: InputDecoration(
                     hintText:
                         AppLocalizations.of(context)!.inputDescriptionText,
-                    // border: const OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
