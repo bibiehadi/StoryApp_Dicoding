@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:story_app/commons/config/flavor_config.dart';
 import 'package:story_app/features/home/bloc/get_stories_bloc/get_stories_bloc.dart';
 
 import '../../../commons/config/themes/theme.dart';
@@ -44,7 +45,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
         foregroundColor: secondaryColor,
         surfaceTintColor: primaryColor,
         title: Text(
-          'Story App',
+          FlavorConfig.instance.values.titleApp,
           style: myTextTheme.titleLarge,
         ),
         actions: [

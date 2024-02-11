@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/commons/common.dart';
+import 'package:story_app/commons/config/flavor_config.dart';
 import 'package:story_app/features/auth/bloc/auth_bloc.dart';
 import 'package:story_app/features/auth/data/models/request/register_request_model.dart';
 
@@ -90,15 +91,15 @@ class _RegisterPageState extends State<RegisterPage> {
         },
         child: ListView(
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(top: 50.0, bottom: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Story App",
-                    style: TextStyle(
+                    FlavorConfig.instance.values.titleApp,
+                    style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),

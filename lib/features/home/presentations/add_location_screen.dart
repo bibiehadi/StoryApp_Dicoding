@@ -188,7 +188,6 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
-        print('Location services is not available');
         return;
       }
     }
@@ -197,7 +196,6 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) {
-        print("Location permission is denied");
         return;
       }
     }
@@ -210,7 +208,6 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
   }
 
   void defineMarker(double lat, double lon) async {
-    print('hit');
     final currentPosisition = LatLng(lat, lon);
 
     final info = await geo.placemarkFromCoordinates(

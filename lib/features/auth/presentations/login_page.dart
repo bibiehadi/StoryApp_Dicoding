@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:story_app/commons/common.dart';
+import 'package:story_app/commons/config/flavor_config.dart';
 import 'package:story_app/features/auth/bloc/auth_bloc.dart';
 import 'package:story_app/features/auth/data/models/request/login_request_model.dart';
 
@@ -81,12 +82,12 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Padding(
+              Padding(
                 padding:
                     EdgeInsets.symmetric(horizontal: 20.0, vertical: 100.0),
                 child: Text(
-                  "Story App",
-                  style: TextStyle(
+                  FlavorConfig.instance.values.titleApp,
+                  style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),

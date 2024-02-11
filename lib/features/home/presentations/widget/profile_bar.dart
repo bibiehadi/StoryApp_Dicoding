@@ -12,7 +12,7 @@ class ProfileBar extends StatefulWidget {
     // required this.location,
     this.lat,
     this.lon,
-    required this.withLocation,
+    // required this.withLocation,
   });
 
   final String imageUrl;
@@ -20,7 +20,7 @@ class ProfileBar extends StatefulWidget {
   // final String location;
   final num? lat;
   final num? lon;
-  final bool withLocation;
+  // final bool withLocation;
 
   @override
   State<ProfileBar> createState() => _ProfileBarState();
@@ -28,9 +28,11 @@ class ProfileBar extends StatefulWidget {
 
 class _ProfileBarState extends State<ProfileBar> {
   String location = '';
+  bool withLocation = false;
   @override
   void initState() {
-    if (widget.withLocation) {
+    if (widget.lat != 0 && widget.lon != 0) {
+      withLocation = true;
       getLocation(widget.lat!.toDouble(), widget.lon!.toDouble());
     }
     super.initState();
@@ -70,7 +72,7 @@ class _ProfileBarState extends State<ProfileBar> {
                 style: myTextTheme.titleMedium
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
-              if (widget.withLocation)
+              if (withLocation)
                 GestureDetector(
                   onTap: () =>
                       context.push('/map?lat=${widget.lat}&lon=${widget.lon}'),

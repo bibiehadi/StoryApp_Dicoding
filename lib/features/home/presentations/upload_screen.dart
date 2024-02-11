@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:story_app/commons/common.dart';
+import 'package:story_app/commons/config/flavor_config.dart';
 import 'package:story_app/features/home/bloc/get_stories_bloc/get_stories_bloc.dart';
 import 'package:story_app/features/home/bloc/upload_story/upload_story_bloc.dart';
 
@@ -198,19 +199,20 @@ class _UploadScreenState extends State<UploadScreen> {
               const SizedBox(
                 height: 5.0,
               ),
-              ListTile(
-                onTap: () async {
-                  List? result = await context.push<List>('/add_location');
-                  selectedLocation = result![0];
-                  address = result[1] ?? '';
-                  setState(() {});
-                },
-                title: Text((selectedLocation == null)
-                    ? AppLocalizations.of(context)!.locationText
-                    : address),
-                leading: const Icon(Icons.location_on),
-                trailing: const Icon(Icons.arrow_right_sharp),
-              ),
+              if (FlavorConfig.instance.flavor == FlavorType.paid)
+                ListTile(
+                  onTap: () async {
+                    List? result = await context.push<List>('/add_location');
+                    selectedLocation = result![0];
+                    address = result[1] ?? '';
+                    setState(() {});
+                  },
+                  title: Text((selectedLocation == null)
+                      ? AppLocalizations.of(context)!.locationText
+                      : address),
+                  leading: const Icon(Icons.location_on),
+                  trailing: const Icon(Icons.arrow_right_sharp),
+                ),
               Expanded(
                 flex: 2,
                 child: TextFormField(

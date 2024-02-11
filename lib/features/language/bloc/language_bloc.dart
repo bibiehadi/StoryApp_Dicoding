@@ -10,16 +10,6 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
   LanguageBloc() : super(InitialLanguageState()) {
     on<ChangeLanguageEvent>(
       (event, emit) async {
-        // final savedLang = await LanguangeDatasource().getLanguange();
-        // if (savedLang != '') {
-        //   emit(
-        //     state.copyWith(
-        //       selectedLanguage: (savedLang == 'Indonesia')
-        //           ? Language.indonesia
-        //           : Language.english,
-        //     ),
-        //   );
-        // } else {
         await LanguangeDatasource().setLanguange(event.selectedLanguage);
         emit(ChangedLanguageState(selectedLanguage: event.selectedLanguage));
         // }
